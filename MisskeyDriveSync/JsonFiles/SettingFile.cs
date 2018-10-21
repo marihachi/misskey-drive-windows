@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace MisskeyDriveSync
+namespace MisskeyDriveSync.JsonFiles
 {
-	public class AccountsFile : JsonFile
+	public class SettingFile : JsonFile
 	{
 
 		#region Properties
@@ -20,24 +20,24 @@ namespace MisskeyDriveSync
 		}
 
 		/// <summary>
-		/// settings.json から設定を読み込みます
-		/// <para>settings.json が存在しないときは新規に生成します</para>
+		/// JSONファイルから設定を読み込みます
+		/// <para>JSONファイルが存在しないときは新規に生成します</para>
 		/// </summary>
-		public static async Task<AccountsFile> LoadAsync()
+		public static async Task<SettingFile> LoadAsync()
 		{
-			var setting = await LoadAsync<AccountsFile>("misskeyDriveSync.accounts.json");
+			var setting = await LoadAsync<SettingFile>("misskeyDriveSync.setting.json");
 			setting._Normalize();
 
 			return setting;
 		}
 
 		/// <summary>
-		/// settings.json に設定を保存します
+		/// JSONファイルに設定を保存します
 		/// </summary>
 		public Task SaveAsync()
 		{
 			_Normalize();
-			return SaveAsync("misskeyDriveSync.accounts.json");
+			return SaveAsync("misskeyDriveSync.setting.json");
 		}
 
 		#endregion Methods

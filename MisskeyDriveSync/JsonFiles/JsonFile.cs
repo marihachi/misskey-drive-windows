@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MisskeyDriveSync
+namespace MisskeyDriveSync.JsonFiles
 {
 	public abstract class JsonFile
 	{

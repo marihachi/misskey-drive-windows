@@ -28,22 +28,28 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.mainTabControl = new System.Windows.Forms.TabControl();
 			this.generalTabPage = new System.Windows.Forms.TabPage();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
 			this.accountsTabPage = new System.Windows.Forms.TabPage();
 			this.versionInfoTabPage = new System.Windows.Forms.TabPage();
 			this.versionLabel = new System.Windows.Forms.Label();
 			this.appNameLabel = new System.Windows.Forms.Label();
+			this.debugTabPage = new System.Windows.Forms.TabPage();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.button1 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
 			this.okButton = new System.Windows.Forms.Button();
 			this.applyButton = new System.Windows.Forms.Button();
-			this.debugTabPage = new System.Windows.Forms.TabPage();
+			this.NotificationAreaMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.設定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.終了XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.mainTabControl.SuspendLayout();
 			this.versionInfoTabPage.SuspendLayout();
 			this.debugTabPage.SuspendLayout();
+			this.NotificationAreaMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mainTabControl
@@ -71,33 +77,6 @@
 			this.generalTabPage.TabIndex = 0;
 			this.generalTabPage.Text = "全般";
 			this.generalTabPage.UseVisualStyleBackColor = true;
-			// 
-			// textBox1
-			// 
-			this.textBox1.Location = new System.Drawing.Point(32, 75);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(180, 19);
-			this.textBox1.TabIndex = 2;
-			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(32, 100);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 1;
-			this.button2.Text = "button2";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
-			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(32, 30);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// accountsTabPage
 			// 
@@ -142,6 +121,46 @@
 			this.appNameLabel.TabIndex = 0;
 			this.appNameLabel.Text = "Misskey ドライブ for Windows Desktop";
 			// 
+			// debugTabPage
+			// 
+			this.debugTabPage.Controls.Add(this.textBox1);
+			this.debugTabPage.Controls.Add(this.button1);
+			this.debugTabPage.Controls.Add(this.button2);
+			this.debugTabPage.Location = new System.Drawing.Point(4, 22);
+			this.debugTabPage.Name = "debugTabPage";
+			this.debugTabPage.Padding = new System.Windows.Forms.Padding(3);
+			this.debugTabPage.Size = new System.Drawing.Size(592, 360);
+			this.debugTabPage.TabIndex = 3;
+			this.debugTabPage.Text = "debug";
+			this.debugTabPage.UseVisualStyleBackColor = true;
+			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(32, 75);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(180, 19);
+			this.textBox1.TabIndex = 2;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(32, 30);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 0;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(32, 100);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 1;
+			this.button2.Text = "button2";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
+			// 
 			// cancelButton
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -176,18 +195,33 @@
 			this.applyButton.UseVisualStyleBackColor = true;
 			this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
 			// 
-			// debugTabPage
+			// NotificationAreaMenu
 			// 
-			this.debugTabPage.Controls.Add(this.textBox1);
-			this.debugTabPage.Controls.Add(this.button1);
-			this.debugTabPage.Controls.Add(this.button2);
-			this.debugTabPage.Location = new System.Drawing.Point(4, 22);
-			this.debugTabPage.Name = "debugTabPage";
-			this.debugTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.debugTabPage.Size = new System.Drawing.Size(592, 360);
-			this.debugTabPage.TabIndex = 3;
-			this.debugTabPage.Text = "debug";
-			this.debugTabPage.UseVisualStyleBackColor = true;
+			this.NotificationAreaMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.設定ToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.終了XToolStripMenuItem});
+			this.NotificationAreaMenu.Name = "NotificationAreaMenu";
+			this.NotificationAreaMenu.Size = new System.Drawing.Size(181, 76);
+			// 
+			// 設定ToolStripMenuItem
+			// 
+			this.設定ToolStripMenuItem.Name = "設定ToolStripMenuItem";
+			this.設定ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.設定ToolStripMenuItem.Text = "設定(&S)...";
+			this.設定ToolStripMenuItem.Click += new System.EventHandler(this.SettingToolStripMenuItem_Click);
+			// 
+			// 終了XToolStripMenuItem
+			// 
+			this.終了XToolStripMenuItem.Name = "終了XToolStripMenuItem";
+			this.終了XToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.終了XToolStripMenuItem.Text = "終了(&X)";
+			this.終了XToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(127, 6);
 			// 
 			// MainForm
 			// 
@@ -210,6 +244,7 @@
 			this.versionInfoTabPage.PerformLayout();
 			this.debugTabPage.ResumeLayout(false);
 			this.debugTabPage.PerformLayout();
+			this.NotificationAreaMenu.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -229,6 +264,10 @@
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.TabPage debugTabPage;
+		private System.Windows.Forms.ContextMenuStrip NotificationAreaMenu;
+		private System.Windows.Forms.ToolStripMenuItem 設定ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripMenuItem 終了XToolStripMenuItem;
 	}
 }
 

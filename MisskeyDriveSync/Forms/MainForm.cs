@@ -1,5 +1,6 @@
 ﻿using Disboard.Misskey;
 using MisskeyDriveSync.Models;
+using MisskeyDriveSync.Properties;
 using MisskeyDriveSync.Services;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,10 @@ namespace MisskeyDriveSync.Forms
 		{
 			InitializeComponent();
 		}
+
+		private NotifyIcon NotificationAreaIcon { get; set; }
+
+		private bool IsExitApp = false;
 
 		#region Refresh methods
 
@@ -42,12 +47,19 @@ namespace MisskeyDriveSync.Forms
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
-
 #if !DEBUG
 			this.mainTabControl.TabPages.Remove(this.debugTabPage);
 #endif
 
 			refreshVersionInfo();
+
+			this.NotificationAreaIcon = new NotifyIcon()
+			{
+				Icon = Resources.mds,
+				Visible = true,
+				Text = "Misskey ドライブ",
+				ContextMenuStrip = this.NotificationAreaMenu
+			};
 		}
 
 		private void okButton_Click(object sender, EventArgs e)
@@ -67,9 +79,20 @@ namespace MisskeyDriveSync.Forms
 			Hide();
 		}
 
+		private void SettingToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Show();
+		}
+
+		private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.IsExitApp = true;
+			Close();
+		}
+
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (e.CloseReason == CloseReason.UserClosing)
+			if (e.CloseReason == CloseReason.UserClosing && !this.IsExitApp)
 			{
 				e.Cancel = true;
 				processCannel();

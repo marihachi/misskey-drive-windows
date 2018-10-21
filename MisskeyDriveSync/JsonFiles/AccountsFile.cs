@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using MisskeyDriveSync.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MisskeyDriveSync.JsonFiles
 {
@@ -6,6 +8,10 @@ namespace MisskeyDriveSync.JsonFiles
 	{
 
 		#region Properties
+
+		public List<MisskeyApp> Instances { get; set; } = new List<MisskeyApp>();
+
+		public List<MisskeyAccount> Accounts { get; set; } = new List<MisskeyAccount>();
 
 		#endregion Properties
 

@@ -1,4 +1,4 @@
-﻿namespace MisskeyDriveSync
+﻿namespace MisskeyDriveSync.Forms
 {
 	partial class MainForm
 	{
@@ -29,16 +29,21 @@
 		private void InitializeComponent()
 		{
 			this.mainTabControl = new System.Windows.Forms.TabControl();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.appNameLabel = new System.Windows.Forms.Label();
+			this.generalTabPage = new System.Windows.Forms.TabPage();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.button2 = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
+			this.accountsTabPage = new System.Windows.Forms.TabPage();
+			this.versionInfoTabPage = new System.Windows.Forms.TabPage();
 			this.versionLabel = new System.Windows.Forms.Label();
+			this.appNameLabel = new System.Windows.Forms.Label();
 			this.cancelButton = new System.Windows.Forms.Button();
 			this.okButton = new System.Windows.Forms.Button();
 			this.applyButton = new System.Windows.Forms.Button();
+			this.debugTabPage = new System.Windows.Forms.TabPage();
 			this.mainTabControl.SuspendLayout();
-			this.tabPage3.SuspendLayout();
+			this.versionInfoTabPage.SuspendLayout();
+			this.debugTabPage.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mainTabControl
@@ -46,9 +51,10 @@
 			this.mainTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.mainTabControl.Controls.Add(this.tabPage1);
-			this.mainTabControl.Controls.Add(this.tabPage2);
-			this.mainTabControl.Controls.Add(this.tabPage3);
+			this.mainTabControl.Controls.Add(this.generalTabPage);
+			this.mainTabControl.Controls.Add(this.accountsTabPage);
+			this.mainTabControl.Controls.Add(this.versionInfoTabPage);
+			this.mainTabControl.Controls.Add(this.debugTabPage);
 			this.mainTabControl.Location = new System.Drawing.Point(12, 12);
 			this.mainTabControl.Name = "mainTabControl";
 			this.mainTabControl.Padding = new System.Drawing.Point(15, 3);
@@ -56,37 +62,74 @@
 			this.mainTabControl.Size = new System.Drawing.Size(600, 386);
 			this.mainTabControl.TabIndex = 0;
 			// 
-			// tabPage1
+			// generalTabPage
 			// 
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(592, 360);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "全般";
-			this.tabPage1.UseVisualStyleBackColor = true;
+			this.generalTabPage.Location = new System.Drawing.Point(4, 22);
+			this.generalTabPage.Name = "generalTabPage";
+			this.generalTabPage.Padding = new System.Windows.Forms.Padding(3);
+			this.generalTabPage.Size = new System.Drawing.Size(592, 360);
+			this.generalTabPage.TabIndex = 0;
+			this.generalTabPage.Text = "全般";
+			this.generalTabPage.UseVisualStyleBackColor = true;
 			// 
-			// tabPage2
+			// textBox1
 			// 
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(592, 360);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "アカウント";
-			this.tabPage2.UseVisualStyleBackColor = true;
+			this.textBox1.Location = new System.Drawing.Point(32, 75);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(180, 19);
+			this.textBox1.TabIndex = 2;
 			// 
-			// tabPage3
+			// button2
 			// 
-			this.tabPage3.Controls.Add(this.versionLabel);
-			this.tabPage3.Controls.Add(this.appNameLabel);
-			this.tabPage3.Location = new System.Drawing.Point(4, 22);
-			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage3.Size = new System.Drawing.Size(592, 360);
-			this.tabPage3.TabIndex = 2;
-			this.tabPage3.Text = "バージョン情報";
-			this.tabPage3.UseVisualStyleBackColor = true;
+			this.button2.Location = new System.Drawing.Point(32, 100);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 1;
+			this.button2.Text = "button2";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(32, 30);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 0;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// accountsTabPage
+			// 
+			this.accountsTabPage.Location = new System.Drawing.Point(4, 22);
+			this.accountsTabPage.Name = "accountsTabPage";
+			this.accountsTabPage.Padding = new System.Windows.Forms.Padding(3);
+			this.accountsTabPage.Size = new System.Drawing.Size(592, 360);
+			this.accountsTabPage.TabIndex = 1;
+			this.accountsTabPage.Text = "アカウント";
+			this.accountsTabPage.UseVisualStyleBackColor = true;
+			// 
+			// versionInfoTabPage
+			// 
+			this.versionInfoTabPage.Controls.Add(this.versionLabel);
+			this.versionInfoTabPage.Controls.Add(this.appNameLabel);
+			this.versionInfoTabPage.Location = new System.Drawing.Point(4, 22);
+			this.versionInfoTabPage.Name = "versionInfoTabPage";
+			this.versionInfoTabPage.Padding = new System.Windows.Forms.Padding(3);
+			this.versionInfoTabPage.Size = new System.Drawing.Size(592, 360);
+			this.versionInfoTabPage.TabIndex = 2;
+			this.versionInfoTabPage.Text = "バージョン情報";
+			this.versionInfoTabPage.UseVisualStyleBackColor = true;
+			// 
+			// versionLabel
+			// 
+			this.versionLabel.AutoSize = true;
+			this.versionLabel.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.versionLabel.Location = new System.Drawing.Point(30, 102);
+			this.versionLabel.Name = "versionLabel";
+			this.versionLabel.Size = new System.Drawing.Size(71, 15);
+			this.versionLabel.TabIndex = 1;
+			this.versionLabel.Text = "Version: -";
 			// 
 			// appNameLabel
 			// 
@@ -98,16 +141,6 @@
 			this.appNameLabel.Size = new System.Drawing.Size(339, 21);
 			this.appNameLabel.TabIndex = 0;
 			this.appNameLabel.Text = "Misskey ドライブ for Windows Desktop";
-			// 
-			// versionLabel
-			// 
-			this.versionLabel.AutoSize = true;
-			this.versionLabel.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.versionLabel.Location = new System.Drawing.Point(30, 102);
-			this.versionLabel.Name = "versionLabel";
-			this.versionLabel.Size = new System.Drawing.Size(71, 15);
-			this.versionLabel.TabIndex = 1;
-			this.versionLabel.Text = "Version: -";
 			// 
 			// cancelButton
 			// 
@@ -143,6 +176,19 @@
 			this.applyButton.UseVisualStyleBackColor = true;
 			this.applyButton.Click += new System.EventHandler(this.applyButton_Click);
 			// 
+			// debugTabPage
+			// 
+			this.debugTabPage.Controls.Add(this.textBox1);
+			this.debugTabPage.Controls.Add(this.button1);
+			this.debugTabPage.Controls.Add(this.button2);
+			this.debugTabPage.Location = new System.Drawing.Point(4, 22);
+			this.debugTabPage.Name = "debugTabPage";
+			this.debugTabPage.Padding = new System.Windows.Forms.Padding(3);
+			this.debugTabPage.Size = new System.Drawing.Size(592, 360);
+			this.debugTabPage.TabIndex = 3;
+			this.debugTabPage.Text = "debug";
+			this.debugTabPage.UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this.AcceptButton = this.okButton;
@@ -160,8 +206,10 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.mainTabControl.ResumeLayout(false);
-			this.tabPage3.ResumeLayout(false);
-			this.tabPage3.PerformLayout();
+			this.versionInfoTabPage.ResumeLayout(false);
+			this.versionInfoTabPage.PerformLayout();
+			this.debugTabPage.ResumeLayout(false);
+			this.debugTabPage.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -169,14 +217,18 @@
 		#endregion
 
 		private System.Windows.Forms.TabControl mainTabControl;
-		private System.Windows.Forms.TabPage tabPage1;
-		private System.Windows.Forms.TabPage tabPage2;
-		private System.Windows.Forms.TabPage tabPage3;
+		private System.Windows.Forms.TabPage generalTabPage;
+		private System.Windows.Forms.TabPage accountsTabPage;
+		private System.Windows.Forms.TabPage versionInfoTabPage;
 		private System.Windows.Forms.Label versionLabel;
 		private System.Windows.Forms.Label appNameLabel;
 		private System.Windows.Forms.Button cancelButton;
 		private System.Windows.Forms.Button okButton;
 		private System.Windows.Forms.Button applyButton;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TabPage debugTabPage;
 	}
 }
 

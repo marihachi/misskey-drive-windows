@@ -82,6 +82,10 @@ namespace MisskeyDriveSync.Forms
 		private void SettingToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Show();
+			if (this.WindowState == FormWindowState.Minimized)
+			{
+				this.WindowState = FormWindowState.Normal;
+			}
 		}
 
 		private void ExitToolStripMenuItem_Click(object sender, EventArgs e)

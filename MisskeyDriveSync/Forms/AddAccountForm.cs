@@ -73,7 +73,7 @@ namespace MisskeyDriveSync.Forms
 
             waitingLabel.Visible = false;
 
-            if (isNewApp || this.AccountsFile.Accounts.Any(i => i.AccessToken == account.AccessToken && i.Domain == app.Domain))
+            if (isNewApp || !this.AccountsFile.Accounts.Any(i => i.AccessToken == account.AccessToken && i.Domain == app.Domain))
             {
                 this.AccountsFile.Accounts.Add(account);
                 await this.AccountsFile.SaveAsync();

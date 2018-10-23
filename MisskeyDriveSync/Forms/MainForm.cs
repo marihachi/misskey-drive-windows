@@ -50,7 +50,7 @@ namespace MisskeyDriveSync.Forms
 
 		#endregion Process Methods
 
-		private void MainForm_Load(object sender, EventArgs e)
+		private async void MainForm_Load(object sender, EventArgs e)
 		{
 #if !DEBUG
 			this.mainTabControl.TabPages.Remove(this.debugTabPage);
@@ -65,6 +65,8 @@ namespace MisskeyDriveSync.Forms
 				Text = "Misskey ドライブ",
 				ContextMenuStrip = this.NotificationAreaMenu
 			};
+
+			this.AccountsFile = await AccountsFile.LoadAsync();
 
 			foreach (var account in this.AccountsFile.Accounts)
 			{

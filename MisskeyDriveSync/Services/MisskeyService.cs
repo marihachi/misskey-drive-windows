@@ -19,7 +19,7 @@ namespace MisskeyDriveSync.Services
 			client.ClientId = app.Id;
 		}
 
-		public static async Task Authorize(MisskeyClient client)
+		public static async Task<Disboard.Misskey.Models.User> Authorize(MisskeyClient client)
 		{
 			if (client.ClientSecret == null)
 				throw new ApplicationException("ClientSecret is empty");
@@ -33,7 +33,10 @@ namespace MisskeyDriveSync.Services
 				try
 				{
 					var credential = await client.Auth.Session.UserKeyAsync(session.Token);
-					if (credential.AccessToken != null) break;
+					if (credential.AccessToken != null)
+					{
+						return credential.User;
+					}
 				}
 				catch (DisboardException ex)
 				{

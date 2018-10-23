@@ -65,13 +65,13 @@ namespace MisskeyDriveSync.Forms
                 await this.AccountsFile.SaveAsync();
             }
 
-            waitingLabel.Visible = true;
+            this.waitingLabel.Visible = true;
 
             var clientForAuth = MisskeyAppConversion.FromAppModel(app);
-            await MisskeyService.Authorize(clientForAuth);
-            var account = MisskeyAccountConversion.ToAccountModel(clientForAuth);
+			var user = await MisskeyService.Authorize(clientForAuth);
+            var account = MisskeyAccountConversion.ToAccountModel(clientForAuth, user.Username, user.Id);
 
-            waitingLabel.Visible = false;
+			this.waitingLabel.Visible = false;
 
             if (isNewApp || !this.AccountsFile.Accounts.Any(i => i.AccessToken == account.AccessToken && i.Domain == app.Domain))
             {

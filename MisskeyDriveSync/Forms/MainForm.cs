@@ -153,61 +153,13 @@ namespace MisskeyDriveSync.Forms
 			}
 		}
 
-		private MisskeyClient client;
-
 		private async void button1_Click(object sender, EventArgs e)
 		{
-			var apps = new List<MisskeyApp>();
-
-			Console.WriteLine("create app");
-
-			// アプリ新規作成
-			this.client = new MisskeyClient("misskey.xyz");
-			await MisskeyService.CreateApp(this.client);
-			apps.Add(MisskeyAppConversion.ToAppModel(this.client));
-			var savedApp = apps[0];
-
-			Console.WriteLine($"(APP SAVE) Domain: {apps[0].Domain}, ClientId: {apps[0].ClientId}, Secret: {apps[0].Secret}");
-
-			Console.WriteLine("close");
-
-			// 終了を再現
-			apps.Clear();
-			this.client = null;
-
-			Console.WriteLine("load app");
-
-			// アプリ読み込み
-			var loadedApp = savedApp;
-			this.client = MisskeyAppConversion.FromAppModel(loadedApp);
-			apps.Add(MisskeyAppConversion.ToAppModel(this.client));
-
-			Console.WriteLine($"(APP LOAD) Domain: {apps[0].Domain}, ClientId: {apps[0].ClientId}, Secret: {apps[0].Secret}");
-
-			// ----
-
-			Console.WriteLine("auth account");
-
-			// アカウント認証
-			await MisskeyService.Authorize(this.client);
-			var savedAccount = MisskeyAccountConversion.ToAccountModel(this.client);
-
-			Console.WriteLine($"(ACC SAVE) Domain: {savedAccount.Domain}, ClientId: {savedAccount.ClientId}, AccessToken: {savedAccount.AccessToken}");
-
-			Console.WriteLine("load account");
-
 			// アカウント読み込み
-			var loadedAccount = savedAccount;
-			this.client = MisskeyAccountConversion.FromAccountModel(loadedAccount, apps);
-			var account = MisskeyAccountConversion.ToAccountModel(this.client);
+			var loadedAccount = this.AccountsFile.Accounts[0];
+			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
 
-			Console.WriteLine($"(ACC LOAD) Domain: {account.Domain}, ClientId: {account.ClientId}, AccessToken: {account.AccessToken}");
-		}
-
-		private async void button2_Click(object sender, EventArgs e)
-		{
-			var foldersInRoot = await this.client.Drive.FoldersAsync();
-
+			var foldersInRoot = await client.Drive.FoldersAsync();
 			foreach (var folder in foldersInRoot)
 			{
 				Console.WriteLine($"(Folder) Id={folder.Id} Name={folder.Name} ParentId={folder.ParentId}");

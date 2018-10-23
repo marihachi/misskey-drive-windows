@@ -32,6 +32,10 @@
 			this.mainTabControl = new System.Windows.Forms.TabControl();
 			this.generalTabPage = new System.Windows.Forms.TabPage();
 			this.accountsTabPage = new System.Windows.Forms.TabPage();
+			this.removeAccountButton = new System.Windows.Forms.Button();
+			this.addAccountButton = new System.Windows.Forms.Button();
+			this.accountListView = new System.Windows.Forms.ListView();
+			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.versionInfoTabPage = new System.Windows.Forms.TabPage();
 			this.versionLabel = new System.Windows.Forms.Label();
 			this.appNameLabel = new System.Windows.Forms.Label();
@@ -44,9 +48,10 @@
 			this.applyButton = new System.Windows.Forms.Button();
 			this.NotificationAreaMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.設定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.終了XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.終了XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainTabControl.SuspendLayout();
+			this.accountsTabPage.SuspendLayout();
 			this.versionInfoTabPage.SuspendLayout();
 			this.debugTabPage.SuspendLayout();
 			this.NotificationAreaMenu.SuspendLayout();
@@ -65,28 +70,73 @@
 			this.mainTabControl.Name = "mainTabControl";
 			this.mainTabControl.Padding = new System.Drawing.Point(15, 3);
 			this.mainTabControl.SelectedIndex = 0;
-			this.mainTabControl.Size = new System.Drawing.Size(600, 386);
+			this.mainTabControl.Size = new System.Drawing.Size(600, 384);
 			this.mainTabControl.TabIndex = 0;
 			// 
 			// generalTabPage
 			// 
 			this.generalTabPage.Location = new System.Drawing.Point(4, 22);
 			this.generalTabPage.Name = "generalTabPage";
-			this.generalTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.generalTabPage.Size = new System.Drawing.Size(592, 360);
+			this.generalTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.generalTabPage.Size = new System.Drawing.Size(592, 358);
 			this.generalTabPage.TabIndex = 0;
 			this.generalTabPage.Text = "全般";
 			this.generalTabPage.UseVisualStyleBackColor = true;
 			// 
 			// accountsTabPage
 			// 
+			this.accountsTabPage.Controls.Add(this.removeAccountButton);
+			this.accountsTabPage.Controls.Add(this.addAccountButton);
+			this.accountsTabPage.Controls.Add(this.accountListView);
 			this.accountsTabPage.Location = new System.Drawing.Point(4, 22);
 			this.accountsTabPage.Name = "accountsTabPage";
-			this.accountsTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.accountsTabPage.Size = new System.Drawing.Size(592, 360);
+			this.accountsTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.accountsTabPage.Size = new System.Drawing.Size(592, 358);
 			this.accountsTabPage.TabIndex = 1;
 			this.accountsTabPage.Text = "アカウント";
 			this.accountsTabPage.UseVisualStyleBackColor = true;
+			// 
+			// removeAccountButton
+			// 
+			this.removeAccountButton.Enabled = false;
+			this.removeAccountButton.Location = new System.Drawing.Point(93, 242);
+			this.removeAccountButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+			this.removeAccountButton.Name = "removeAccountButton";
+			this.removeAccountButton.Size = new System.Drawing.Size(65, 26);
+			this.removeAccountButton.TabIndex = 3;
+			this.removeAccountButton.Text = "削除";
+			this.removeAccountButton.UseVisualStyleBackColor = true;
+			this.removeAccountButton.Click += new System.EventHandler(this.removeAccountButton_Click);
+			// 
+			// addAccountButton
+			// 
+			this.addAccountButton.Location = new System.Drawing.Point(20, 242);
+			this.addAccountButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+			this.addAccountButton.Name = "addAccountButton";
+			this.addAccountButton.Size = new System.Drawing.Size(65, 26);
+			this.addAccountButton.TabIndex = 1;
+			this.addAccountButton.Text = "追加";
+			this.addAccountButton.UseVisualStyleBackColor = true;
+			this.addAccountButton.Click += new System.EventHandler(this.addAccountButton_Click);
+			// 
+			// accountListView
+			// 
+			this.accountListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+			this.accountListView.GridLines = true;
+			this.accountListView.Location = new System.Drawing.Point(20, 27);
+			this.accountListView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.accountListView.Name = "accountListView";
+			this.accountListView.Size = new System.Drawing.Size(360, 201);
+			this.accountListView.TabIndex = 0;
+			this.accountListView.UseCompatibleStateImageBehavior = false;
+			this.accountListView.View = System.Windows.Forms.View.Details;
+			this.accountListView.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+			// 
+			// columnHeader1
+			// 
+			this.columnHeader1.Text = "アカウント名";
+			this.columnHeader1.Width = 300;
 			// 
 			// versionInfoTabPage
 			// 
@@ -94,8 +144,8 @@
 			this.versionInfoTabPage.Controls.Add(this.appNameLabel);
 			this.versionInfoTabPage.Location = new System.Drawing.Point(4, 22);
 			this.versionInfoTabPage.Name = "versionInfoTabPage";
-			this.versionInfoTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.versionInfoTabPage.Size = new System.Drawing.Size(592, 360);
+			this.versionInfoTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.versionInfoTabPage.Size = new System.Drawing.Size(592, 358);
 			this.versionInfoTabPage.TabIndex = 2;
 			this.versionInfoTabPage.Text = "バージョン情報";
 			this.versionInfoTabPage.UseVisualStyleBackColor = true;
@@ -128,8 +178,8 @@
 			this.debugTabPage.Controls.Add(this.button2);
 			this.debugTabPage.Location = new System.Drawing.Point(4, 22);
 			this.debugTabPage.Name = "debugTabPage";
-			this.debugTabPage.Padding = new System.Windows.Forms.Padding(3);
-			this.debugTabPage.Size = new System.Drawing.Size(592, 360);
+			this.debugTabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.debugTabPage.Size = new System.Drawing.Size(592, 358);
 			this.debugTabPage.TabIndex = 3;
 			this.debugTabPage.Text = "debug";
 			this.debugTabPage.UseVisualStyleBackColor = true;
@@ -165,7 +215,8 @@
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(432, 404);
+			this.cancelButton.Location = new System.Drawing.Point(434, 404);
+			this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(85, 26);
 			this.cancelButton.TabIndex = 1;
@@ -176,7 +227,8 @@
 			// okButton
 			// 
 			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.okButton.Location = new System.Drawing.Point(337, 404);
+			this.okButton.Location = new System.Drawing.Point(340, 404);
+			this.okButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(85, 26);
 			this.okButton.TabIndex = 2;
@@ -187,7 +239,8 @@
 			// applyButton
 			// 
 			this.applyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.applyButton.Location = new System.Drawing.Point(527, 404);
+			this.applyButton.Location = new System.Drawing.Point(528, 404);
+			this.applyButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			this.applyButton.Name = "applyButton";
 			this.applyButton.Size = new System.Drawing.Size(85, 26);
 			this.applyButton.TabIndex = 3;
@@ -197,31 +250,32 @@
 			// 
 			// NotificationAreaMenu
 			// 
+			this.NotificationAreaMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.NotificationAreaMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.設定ToolStripMenuItem,
             this.toolStripSeparator1,
             this.終了XToolStripMenuItem});
 			this.NotificationAreaMenu.Name = "NotificationAreaMenu";
-			this.NotificationAreaMenu.Size = new System.Drawing.Size(181, 76);
+			this.NotificationAreaMenu.Size = new System.Drawing.Size(131, 54);
 			// 
 			// 設定ToolStripMenuItem
 			// 
 			this.設定ToolStripMenuItem.Name = "設定ToolStripMenuItem";
-			this.設定ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.設定ToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
 			this.設定ToolStripMenuItem.Text = "設定(&S)...";
 			this.設定ToolStripMenuItem.Click += new System.EventHandler(this.SettingToolStripMenuItem_Click);
-			// 
-			// 終了XToolStripMenuItem
-			// 
-			this.終了XToolStripMenuItem.Name = "終了XToolStripMenuItem";
-			this.終了XToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.終了XToolStripMenuItem.Text = "終了(&X)";
-			this.終了XToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(127, 6);
+			// 
+			// 終了XToolStripMenuItem
+			// 
+			this.終了XToolStripMenuItem.Name = "終了XToolStripMenuItem";
+			this.終了XToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+			this.終了XToolStripMenuItem.Text = "終了(&X)";
+			this.終了XToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -234,12 +288,13 @@
 			this.Controls.Add(this.okButton);
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.mainTabControl);
-			this.MinimumSize = new System.Drawing.Size(640, 480);
+			this.MinimumSize = new System.Drawing.Size(639, 478);
 			this.Name = "MainForm";
 			this.Text = "Misskey ドライブ";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.mainTabControl.ResumeLayout(false);
+			this.accountsTabPage.ResumeLayout(false);
 			this.versionInfoTabPage.ResumeLayout(false);
 			this.versionInfoTabPage.PerformLayout();
 			this.debugTabPage.ResumeLayout(false);
@@ -268,6 +323,10 @@
 		private System.Windows.Forms.ToolStripMenuItem 設定ToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem 終了XToolStripMenuItem;
+		private System.Windows.Forms.ListView accountListView;
+		private System.Windows.Forms.ColumnHeader columnHeader1;
+		private System.Windows.Forms.Button addAccountButton;
+		private System.Windows.Forms.Button removeAccountButton;
 	}
 }
 

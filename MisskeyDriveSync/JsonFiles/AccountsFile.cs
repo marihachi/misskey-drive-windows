@@ -9,7 +9,7 @@ namespace MisskeyDriveSync.JsonFiles
 
 		#region Properties
 
-		public List<MisskeyApp> Instances { get; set; } = new List<MisskeyApp>();
+		public List<MisskeyApp> Apps { get; set; } = new List<MisskeyApp>();
 
 		public List<MisskeyAccount> Accounts { get; set; } = new List<MisskeyAccount>();
 

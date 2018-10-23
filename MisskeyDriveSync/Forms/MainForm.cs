@@ -1,4 +1,5 @@
 ﻿using Disboard.Misskey;
+using MisskeyDriveSync.JsonFiles;
 using MisskeyDriveSync.Models;
 using MisskeyDriveSync.Properties;
 using MisskeyDriveSync.Services;
@@ -18,6 +19,10 @@ namespace MisskeyDriveSync.Forms
 		private NotifyIcon NotificationAreaIcon { get; set; }
 
 		private bool IsExitApp = false;
+
+		private AccountsFile AccountsFile { get; set; }
+
+		private SettingFile SettingFile { get; set; }
 
 		#region Refresh methods
 
@@ -51,7 +56,7 @@ namespace MisskeyDriveSync.Forms
 			this.mainTabControl.TabPages.Remove(this.debugTabPage);
 #endif
 
-			refreshVersionInfo();
+			this.refreshVersionInfo();
 
 			this.NotificationAreaIcon = new NotifyIcon()
 			{
@@ -60,6 +65,48 @@ namespace MisskeyDriveSync.Forms
 				Text = "Misskey ドライブ",
 				ContextMenuStrip = this.NotificationAreaMenu
 			};
+
+			foreach (var account in this.AccountsFile.Accounts)
+			{
+				this.accountListView.Items.Add(new ListViewItem(new[] { $"{account.Username}@{account.Domain}" })
+				{
+					Tag = account
+				});
+			}
+		}
+
+		private void addAccountButton_Click(object sender, EventArgs e)
+		{
+			var f = new AddAccountForm(this.AccountsFile);
+			if (f.ShowDialog() == DialogResult.OK)
+			{
+				var account = f.Data;
+
+				// 新しくAccountsに追加された場合
+				if (account != null)
+				{
+					// リストに項目を追加
+					this.accountListView.Items.Add(new ListViewItem(new[] { $"{account.Username}@{account.Domain}" })
+					{
+						Tag = account
+					});
+				}
+			}
+		}
+
+		private async void removeAccountButton_Click(object sender, EventArgs e)
+		{
+			var item = this.accountListView.SelectedItems[0];
+			var account = (MisskeyAccount)item.Tag;
+			this.AccountsFile.Accounts.Remove(account);
+			await this.AccountsFile.SaveAsync();
+			this.accountListView.Items.Remove(item);
+		}
+
+		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var selected = this.accountListView.SelectedIndices.Count != 0;
+			this.removeAccountButton.Enabled = selected;
 		}
 
 		private void okButton_Click(object sender, EventArgs e)

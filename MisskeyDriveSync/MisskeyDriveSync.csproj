@@ -61,6 +61,7 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\MisskeyDriveTreeNode.cs" />
     <Compile Include="Models\MisskeyInstance.cs" />
     <Compile Include="Models\MisskeyAccount.cs" />
     <Compile Include="Program.cs" />

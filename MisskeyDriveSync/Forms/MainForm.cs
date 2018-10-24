@@ -243,7 +243,6 @@ namespace MisskeyDriveSync.Forms
 
 			var t1 = Task.Run(async () =>
 			{
-				//await Task.Delay(10);
 				Console.WriteLine("drive/folders");
 				var folders = await client.Drive.FoldersAsync(folderId: currentFolder?.Id, limit: 100);
 

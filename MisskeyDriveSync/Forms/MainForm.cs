@@ -292,22 +292,38 @@ namespace MisskeyDriveSync.Forms
 
 		private async void button1_Click(object sender, EventArgs e)
 		{
-			await processScan(1);
+			await processScan(4);
 		}
 
 		private async void button2_Click(object sender, EventArgs e)
 		{
-			await processScan(2);
-		}
+			// アカウント読み込み
+			var loadedAccount = this.AccountsFile.Accounts[0];
+			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
 
-		private async void button3_Click(object sender, EventArgs e)
-		{
-			await processScan(3);
-		}
+			var totalFiles = new List<Disboard.Misskey.Models.File>();
+			string cursor = null;
+			do
+			{
+				var files = (await client.Drive.FilesAsync(limit: 100, untilId: cursor)).ToList();
+				if (files.Count > 0)
+				{
+					cursor = files[files.Count - 1].Id;
+					totalFiles.AddRange(files);
+					//await Task.Delay(100);
+				}
+				else
+				{
+					cursor = null;
+				}
+			}
+			while (cursor != null);
 
-		private async void button4_Click(object sender, EventArgs e)
-		{
-			await processScan(4);
+			Console.WriteLine($"totalFiles: {totalFiles.Count}");
+			foreach (var file in totalFiles)
+			{
+				Console.WriteLine($"file: {file.Id}");
+			}
 		}
 	}
 }

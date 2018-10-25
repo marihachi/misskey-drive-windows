@@ -40,6 +40,7 @@
 			this.versionLabel = new System.Windows.Forms.Label();
 			this.appNameLabel = new System.Windows.Forms.Label();
 			this.debugTabPage = new System.Windows.Forms.TabPage();
+			this.button2 = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
 			this.cancelButton = new System.Windows.Forms.Button();
 			this.okButton = new System.Windows.Forms.Button();
@@ -48,9 +49,6 @@
 			this.設定ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.終了XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button3 = new System.Windows.Forms.Button();
-			this.button4 = new System.Windows.Forms.Button();
 			this.mainTabControl.SuspendLayout();
 			this.accountsTabPage.SuspendLayout();
 			this.versionInfoTabPage.SuspendLayout();
@@ -174,8 +172,6 @@
 			// 
 			// debugTabPage
 			// 
-			this.debugTabPage.Controls.Add(this.button4);
-			this.debugTabPage.Controls.Add(this.button3);
 			this.debugTabPage.Controls.Add(this.button2);
 			this.debugTabPage.Controls.Add(this.button1);
 			this.debugTabPage.Location = new System.Drawing.Point(4, 22);
@@ -185,6 +181,16 @@
 			this.debugTabPage.TabIndex = 3;
 			this.debugTabPage.Text = "debug";
 			this.debugTabPage.UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(32, 80);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 1;
+			this.button2.Text = "button2";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
 			// button1
 			// 
@@ -262,36 +268,6 @@
 			this.終了XToolStripMenuItem.Text = "終了(&X)";
 			this.終了XToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
 			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(32, 80);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 1;
-			this.button2.Text = "button2";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
-			// 
-			// button3
-			// 
-			this.button3.Location = new System.Drawing.Point(32, 131);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(75, 23);
-			this.button3.TabIndex = 2;
-			this.button3.Text = "button3";
-			this.button3.UseVisualStyleBackColor = true;
-			this.button3.Click += new System.EventHandler(this.button3_Click);
-			// 
-			// button4
-			// 
-			this.button4.Location = new System.Drawing.Point(32, 182);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(75, 23);
-			this.button4.TabIndex = 3;
-			this.button4.Text = "button4";
-			this.button4.UseVisualStyleBackColor = true;
-			this.button4.Click += new System.EventHandler(this.button4_Click);
-			// 
 			// MainForm
 			// 
 			this.AcceptButton = this.okButton;
@@ -339,9 +315,7 @@
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.Button addAccountButton;
 		private System.Windows.Forms.Button removeAccountButton;
-		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button4;
 	}
 }
 

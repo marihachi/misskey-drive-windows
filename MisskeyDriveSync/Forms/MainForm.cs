@@ -164,7 +164,7 @@ namespace MisskeyDriveSync.Forms
 
 			// - children
 
-			Console.WriteLine("drive/folders");
+			//Console.WriteLine("drive/folders");
 			var folders = await client.Drive.FoldersAsync(folderId: currentFolder?.Id, limit: 100);
 
 			// serial
@@ -177,7 +177,7 @@ namespace MisskeyDriveSync.Forms
 
 			// - files
 
-			Console.WriteLine("drive/files");
+			//Console.WriteLine("drive/files");
 			currentNode.Files = (await client.Drive.FilesAsync(folderId: currentFolder?.Id, limit: 100)).ToList();
 		}
 
@@ -189,7 +189,7 @@ namespace MisskeyDriveSync.Forms
 
 			// - children
 
-			Console.WriteLine("drive/folders");
+			//Console.WriteLine("drive/folders");
 			var folders = await client.Drive.FoldersAsync(folderId: currentFolder?.Id, limit: 100);
 
 			// concurrent
@@ -203,7 +203,7 @@ namespace MisskeyDriveSync.Forms
 
 			// - files
 
-			Console.WriteLine("drive/files");
+			//Console.WriteLine("drive/files");
 			currentNode.Files = (await client.Drive.FilesAsync(folderId: currentFolder?.Id, limit: 100)).ToList();
 		}
 
@@ -215,7 +215,7 @@ namespace MisskeyDriveSync.Forms
 
 			// - children
 
-			Console.WriteLine("drive/folders");
+			//Console.WriteLine("drive/folders");
 			var folders = await client.Drive.FoldersAsync(folderId: currentFolder?.Id, limit: 100);
 
 			// concurrent(Task.Run)
@@ -229,12 +229,14 @@ namespace MisskeyDriveSync.Forms
 
 			// - files
 
-			Console.WriteLine("drive/files");
+			//Console.WriteLine("drive/files");
 			currentNode.Files = (await client.Drive.FilesAsync(folderId: currentFolder?.Id, limit: 100)).ToList();
 		}
 
-		private async Task Scan4(MisskeyClient client, MisskeyDriveTreeNode currentNode, Disboard.Misskey.Models.Folder currentFolder = null)
+		private async Task<MisskeyDriveTreeNode> Scan4(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
 		{
+			currentNode = currentNode ?? new MisskeyDriveTreeNode();
+
 			// - folder
 
 			currentNode.Folder = currentFolder;
@@ -243,7 +245,7 @@ namespace MisskeyDriveSync.Forms
 
 			var t1 = Task.Run(async () =>
 			{
-				Console.WriteLine("drive/folders");
+				//Console.WriteLine("drive/folders");
 				var folders = await client.Drive.FoldersAsync(folderId: currentFolder?.Id, limit: 100);
 
 				// concurrent(Task.Run)
@@ -260,56 +262,26 @@ namespace MisskeyDriveSync.Forms
 
 			var t2 = Task.Run(async () =>
 			{
-				Console.WriteLine("drive/files");
+				//Console.WriteLine("drive/files");
 				currentNode.Files = (await client.Drive.FilesAsync(folderId: currentFolder?.Id, limit: 100)).ToList();
 			});
 
 			await Task.WhenAll(new[] { t1, t2 });
+
+			return currentNode;
 		}
 
-		private async Task processScan(int scanMethod)
+		private async Task<List<Disboard.Misskey.Models.File>> fetchAllFilesInFolder(MisskeyClient client, string folderId = null)
 		{
-			// アカウント読み込み
-			var loadedAccount = this.AccountsFile.Accounts[0];
-			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
-
-			var driveTree = new MisskeyDriveTreeNode();
-
-			var sw = new Stopwatch();
-			sw.Start();
-			if (scanMethod == 1)
-				await Scan1(client, driveTree);
-			if (scanMethod == 2)
-				await Scan2(client, driveTree);
-			if (scanMethod == 3)
-				await Scan3(client, driveTree);
-			if (scanMethod == 4)
-				await Scan4(client, driveTree);
-			sw.Stop();
-
-			Console.WriteLine($"{scanMethod}) {sw.Elapsed}ms");
-		}
-
-		private async void button1_Click(object sender, EventArgs e)
-		{
-			await processScan(4);
-		}
-
-		private async void button2_Click(object sender, EventArgs e)
-		{
-			// アカウント読み込み
-			var loadedAccount = this.AccountsFile.Accounts[0];
-			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
-
-			var totalFiles = new List<Disboard.Misskey.Models.File>();
+			var files = new List<Disboard.Misskey.Models.File>();
 			string cursor = null;
 			do
 			{
-				var files = (await client.Drive.FilesAsync(limit: 100, untilId: cursor)).ToList();
-				if (files.Count > 0)
+				var filesPart = (await client.Drive.FilesAsync(folderId: folderId, limit: 100, untilId: cursor)).ToList();
+				if (filesPart.Count > 0)
 				{
-					cursor = files[files.Count - 1].Id;
-					totalFiles.AddRange(files);
+					cursor = filesPart[filesPart.Count - 1].Id;
+					files.AddRange(filesPart);
 					//await Task.Delay(100);
 				}
 				else
@@ -318,6 +290,28 @@ namespace MisskeyDriveSync.Forms
 				}
 			}
 			while (cursor != null);
+
+			return files;
+		}
+
+		private async void button1_Click(object sender, EventArgs e)
+		{
+			// アカウント読み込み
+			var loadedAccount = this.AccountsFile.Accounts[0];
+			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
+
+			var tree = await Scan4(client);
+
+			Console.WriteLine(tree);
+		}
+
+		private async void button2_Click(object sender, EventArgs e)
+		{
+			// アカウント読み込み
+			var loadedAccount = this.AccountsFile.Accounts[0];
+			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
+
+			var totalFiles = await fetchAllFilesInFolder(client);
 
 			Console.WriteLine($"totalFiles: {totalFiles.Count}");
 			foreach (var file in totalFiles)

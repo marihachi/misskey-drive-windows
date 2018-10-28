@@ -48,12 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcurrentTaskQueuing.cs" />
     <Compile Include="Forms\AddAccountForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\AddAccountForm.Designer.cs">
       <DependentUpon>AddAccountForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="HttpException.cs" />
     <Compile Include="JsonFiles\JsonFile.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>

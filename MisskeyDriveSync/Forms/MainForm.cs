@@ -3,6 +3,11 @@ using MisskeyDriveSync.Models;
 using MisskeyDriveSync.Properties;
 using MisskeyDriveSync.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MisskeyDriveSync.Forms
@@ -157,23 +162,83 @@ namespace MisskeyDriveSync.Forms
 			var loadedAccount = this.AccountsFile.Accounts[0];
 			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
 
-			var tree = await MisskeyService.Scan(client);
+			var tree = await MisskeyService.Instance.Scan(client);
 
-			MisskeyService.ShowNodeTree(tree);
+			MisskeyService.Instance.ShowNodeTree(tree);
+		}
+
+		private async void button2_Click(object sender, EventArgs e)
+		{
+			// アカウント読み込み
+			var loadedAccount = this.AccountsFile.Accounts[0];
+			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
+
+			var tree = await MisskeyService.Instance.Scan(client);
+			var file = tree.Files[0];
+			var fileName = $"{file.Id}.{file.Name}";
+
+			var bytes = await Task.Run(() => System.IO.File.ReadAllBytes($"misskey-drive/{fileName}"));
+
+			var hash = MisskeyService.Instance.CalcMd5(bytes);
+
+			Console.WriteLine($"source:   {file.Md5}");
+			Console.WriteLine($"generate: {hash}");
+		}
+
+		private async void button3_Click(object sender, EventArgs e)
+		{
+			// アカウント読み込み
+			var loadedAccount = this.AccountsFile.Accounts[0];
+			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
+
+			var tree = await MisskeyService.Instance.Scan(client);
 
 			Console.WriteLine("downloading...");
 
-			foreach(var file in tree.Files)
+			var queue = new ConcurrentTaskQueuing();
+
+			foreach (var file in tree.Files)
 			{
-				await MisskeyService.DownloadFile(file);
+				var t = new Task(() =>
+				{
+					try
+					{
+						MisskeyService.Instance.DownloadFile(file).Wait();
+					}
+					catch (AggregateException ex) when (ex?.InnerException is HttpException ex2)
+					{
+						Console.WriteLine($"{file.Id} ({file.Name}): {ex2.StatusCode}");
+					}
+				});
+
+				queue.TaskQueue.Add(t);
 			}
+
+			await queue.Start(2);
 
 			Console.WriteLine("done");
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private async void button4_Click(object sender, EventArgs e)
 		{
+			// アカウント読み込み
+			var loadedAccount = this.AccountsFile.Accounts[0];
+			var client = MisskeyAccountConversion.FromAccountModel(loadedAccount, this.AccountsFile.Apps);
 
+			var tree = await MisskeyService.Instance.Scan(client);
+
+			var pathes = MisskeyService.Instance.BuildPassList(tree, new List<string>());
+
+			foreach (var path in pathes)
+			{
+				var pathStr = string.Join("/", path);
+				Console.WriteLine(pathStr);
+			}
+		}
+
+		private async void button5_Click(object sender, EventArgs e)
+		{
+			
 		}
 	}
 }

@@ -51,7 +51,7 @@ namespace MisskeyDriveSync.Forms
                 try
                 {
                     var clientForCreateApp = new MisskeyClient(uri.Host);
-                    await MisskeyService.CreateApp(clientForCreateApp);
+                    await MisskeyService.Instance.CreateApp(clientForCreateApp);
                     app = MisskeyAppConversion.ToAppModel(clientForCreateApp);
                 }
                 catch
@@ -68,7 +68,7 @@ namespace MisskeyDriveSync.Forms
             this.waitingLabel.Visible = true;
 
             var clientForAuth = MisskeyAppConversion.FromAppModel(app);
-			var user = await MisskeyService.Authorize(clientForAuth);
+			var user = await MisskeyService.Instance.Authorize(clientForAuth);
             var account = MisskeyAccountConversion.ToAccountModel(clientForAuth, user.Username, user.Id);
 
 			this.waitingLabel.Visible = false;

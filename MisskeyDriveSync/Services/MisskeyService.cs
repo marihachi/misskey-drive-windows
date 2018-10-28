@@ -6,13 +6,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MisskeyDriveSync.Services
 {
-	public static class MisskeyService
+	public class MisskeyService
 	{
-		public static async Task CreateApp(MisskeyClient client)
+		public static MisskeyService Instance
+		{
+			get {
+				if (instance == null) instance = new MisskeyService();
+				return instance;
+			}
+		}
+		private static MisskeyService instance;
+
+		private MisskeyService()
+		{
+
+		}
+
+		public async Task CreateApp(MisskeyClient client)
 		{
 			var app = await client.App.CreateAsync(
 				"MisskeyDriveSync",
@@ -23,7 +38,7 @@ namespace MisskeyDriveSync.Services
 			client.ClientId = app.Id;
 		}
 
-		public static async Task<Disboard.Misskey.Models.User> Authorize(MisskeyClient client)
+		public async Task<Disboard.Misskey.Models.User> Authorize(MisskeyClient client)
 		{
 			if (client.ClientSecret == null)
 				throw new ApplicationException("ClientSecret is empty");
@@ -53,7 +68,7 @@ namespace MisskeyDriveSync.Services
 			}
 		}
 
-		private static async Task<MisskeyDriveTreeNode> Scan1(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
+		private async Task<MisskeyDriveTreeNode> Scan1(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
 		{
 			currentNode = currentNode ?? new MisskeyDriveTreeNode();
 
@@ -80,7 +95,7 @@ namespace MisskeyDriveSync.Services
 			return currentNode;
 		}
 
-		private static async Task<MisskeyDriveTreeNode> Scan2(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
+		private async Task<MisskeyDriveTreeNode> Scan2(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
 		{
 			currentNode = currentNode ?? new MisskeyDriveTreeNode();
 
@@ -108,7 +123,7 @@ namespace MisskeyDriveSync.Services
 			return currentNode;
 		}
 
-		private static async Task<MisskeyDriveTreeNode> Scan3(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
+		private async Task<MisskeyDriveTreeNode> Scan3(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
 		{
 			currentNode = currentNode ?? new MisskeyDriveTreeNode();
 
@@ -136,7 +151,7 @@ namespace MisskeyDriveSync.Services
 			return currentNode;
 		}
 
-		private static async Task<MisskeyDriveTreeNode> Scan4(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
+		private async Task<MisskeyDriveTreeNode> Scan4(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
 		{
 			currentNode = currentNode ?? new MisskeyDriveTreeNode();
 
@@ -172,12 +187,12 @@ namespace MisskeyDriveSync.Services
 			return currentNode;
 		}
 
-		public static Task<MisskeyDriveTreeNode> Scan(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
+		public Task<MisskeyDriveTreeNode> Scan(MisskeyClient client, MisskeyDriveTreeNode currentNode = null, Disboard.Misskey.Models.Folder currentFolder = null)
 		{
 			return Scan4(client, currentNode, currentFolder);
 		}
 
-		private static async Task<List<Disboard.Misskey.Models.Folder>> fetchAllFolders(MisskeyClient client, string folderId = null)
+		private async Task<List<Disboard.Misskey.Models.Folder>> fetchAllFolders(MisskeyClient client, string folderId = null)
 		{
 			var folders = new List<Disboard.Misskey.Models.Folder>();
 			string cursor = null;
@@ -204,7 +219,7 @@ namespace MisskeyDriveSync.Services
 			return folders;
 		}
 
-		private static async Task<List<Disboard.Misskey.Models.File>> fetchAllFiles(MisskeyClient client, string folderId = null)
+		private async Task<List<Disboard.Misskey.Models.File>> fetchAllFiles(MisskeyClient client, string folderId = null)
 		{
 			var files = new List<Disboard.Misskey.Models.File>();
 			string cursor = null;
@@ -231,12 +246,12 @@ namespace MisskeyDriveSync.Services
 			return files;
 		}
 
-		private static void writeLineIndent(string message, int indentLevel = 0)
+		private void writeLineIndent(string message, int indentLevel = 0)
 		{
 			Console.WriteLine(new String(' ', indentLevel * 2) + message);
 		}
 
-		public static void ShowNodeTree(MisskeyDriveTreeNode nodeTree, int indentLevel = 0)
+		public void ShowNodeTree(MisskeyDriveTreeNode nodeTree, int indentLevel = 0)
 		{
 			if (!nodeTree.IsRoot)
 			{
@@ -254,19 +269,72 @@ namespace MisskeyDriveSync.Services
 			}
 		}
 
-		private static WebClient webClient = new WebClient();
+		public List<List<string>> BuildPassList(MisskeyDriveTreeNode nodeTree, List<string> currentPath)
+		{
+			var pathes = new List<List<string>>();
+
+			foreach(var file in nodeTree.Files)
+			{
+				var path = new List<string>(currentPath);
+				path.Add(file.Name);
+
+				pathes.Add(path);
+			}
+
+			foreach (var child in nodeTree.Children)
+			{
+				var path = new List<string>(currentPath);
+				path.Add(child.Folder.Name);
+				var childPathes = BuildPassList(child, path);
+
+				pathes.AddRange(childPathes);
+			}
+
+			return pathes;
+		}
+
+		private HttpClient httpClient = new HttpClient();
 
 		/// <returns>ファイルパス</returns>
-		public static async Task<string> DownloadFile(Disboard.Misskey.Models.File file)
+		public async Task<string> DownloadFile(Disboard.Misskey.Models.File file)
 		{
 			if (!Directory.Exists("misskey-drive"))
 				Directory.CreateDirectory("misskey-drive");
 
 			var fileName = $@"misskey-drive/{file.Id}.{file.Name}";
-			if (File.Exists(fileName)) throw new Exception("already exists filename");
-			await webClient.DownloadFileTaskAsync(file.Url, fileName);
+
+			if (!File.Exists(fileName))
+			{
+				var res = await this.httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, file.Url));
+
+				if (!res.IsSuccessStatusCode)
+				{
+					throw new HttpException(res.StatusCode);
+				}
+
+				var bytes = await res.Content.ReadAsByteArrayAsync();
+				if (bytes.Length > 0)
+				{
+					using (var fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+					{
+						await fs.WriteAsync(bytes, 0, bytes.Length);
+					}
+				}
+			}
 
 			return fileName;
+		}
+
+		private System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
+
+		public string CalcMd5(byte[] source)
+		{
+			var dest = this.md5.ComputeHash(source);
+			var sb = new System.Text.StringBuilder();
+			foreach (byte b in dest)
+				sb.Append($"{b:x2}");
+
+			return sb.ToString();
 		}
 	}
 }
